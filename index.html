@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daniel Xiquin — Portafolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --dark: #1a1a1a;
+    --gold: #c9a84c;
+    --gold-light: #e8cc7a;
+    --forest: #2d5016;
+    --sage: #6b8f4e;
+    --rust: #8b3a2a;
+    --warm-white: #faf8f4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(26,26,26,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+  }
+
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 80% 50%, rgba(45,80,22,0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-name span { color: var(--gold); font-style: italic; }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+    max-width: 520px;
+    color: rgba(245,240,232,0.75);
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .tag {
+    padding: 0.4rem 1rem;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.06);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+  }
+
+  .scroll-hint span {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 8rem 6rem;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 3rem;
+  }
+
+  .section-title em { color: var(--gold); font-style: italic; }
+
+  /* ABOUT */
+  #acerca {
+    background: var(--warm-white);
+    color: var(--dark);
+  }
+
+  #acerca .section-label { color: var(--forest); }
+  #acerca .section-label::before { background: var(--forest); }
+  #acerca .section-title em { color: var(--forest); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: rgba(26,26,26,0.8);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-vision {
+    background: var(--dark);
+    color: var(--cream);
+    padding: 2.5rem;
+    border-radius: 4px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .about-vision h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .about-vision p {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    opacity: 0.8;
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-top: 2rem;
+  }
+
+  .value-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: rgba(26,26,26,0.7);
+  }
+
+  .value-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--forest);
+    flex-shrink: 0;
+  }
+
+  /* GOALS */
+  .goals-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .goal-col {
+    padding: 2rem;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    background: rgba(201,168,76,0.03);
+    transition: border-color 0.3s;
+  }
+
+  .goal-col:hover { border-color: rgba(201,168,76,0.5); }
+
+  .goal-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+
+  .goal-col ul { list-style: none; }
+
+  .goal-col li {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    color: rgba(245,240,232,0.75);
+    display: flex;
+    gap: 0.7rem;
+  }
+
+  .goal-col li::before {
+    content: '→';
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.05em;
+  }
+
+  /* PRIMER MES */
+  #primer-mes {
+    background: #111;
+  }
+
+  .mes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .mes-card {
+    padding: 2.5rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+
+  .mes-card.positive {
+    background: rgba(45,80,22,0.2);
+    border: 1px solid rgba(107,143,78,0.3);
+  }
+
+  .mes-card.challenge {
+    background: rgba(139,58,42,0.15);
+    border: 1px solid rgba(139,58,42,0.3);
+  }
+
+  .mes-card.solution {
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+
+  .mes-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .mes-card.positive h3 { color: var(--sage); }
+  .mes-card.challenge h3 { color: #c97070; }
+  .mes-card.solution h3 { color: var(--gold); }
+
+  .mes-card p {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.7);
+  }
+
+  .highlight-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--cream);
+    border-left: 3px solid var(--gold);
+    padding-left: 2rem;
+    margin: 3rem 0;
+  }
+
+  /* APRENDIZAJES */
+  #aprendizajes {
+    background: var(--warm-white);
+    color: var(--dark);
+  }
+
+  #aprendizajes .section-label { color: var(--rust); }
+  #aprendizajes .section-label::before { background: var(--rust); }
+  #aprendizajes .section-title em { color: var(--rust); }
+
+  .learn-card {
+    background: var(--dark);
+    color: var(--cream);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .learn-card-content {
+    padding: 3rem;
+  }
+
+  .learn-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(201,168,76,0.15);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .learn-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .learn-desc {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.7);
+    margin-bottom: 1.5rem;
+  }
+
+  .learn-meta {
+    background: rgba(201,168,76,0.07);
+    border-radius: 6px;
+    padding: 2.5rem;
+    border-left: 3px solid var(--rust);
+  }
+
+  .learn-meta h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 1rem;
+  }
+
+  .learn-meta p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(26,26,26,0.75);
+  }
+
+  .code-block {
+    background: #0d0d0d;
+    border-radius: 6px;
+    padding: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: #a8d8a8;
+    border: 1px solid rgba(201,168,76,0.15);
+    margin-top: 1.5rem;
+    overflow-x: auto;
+  }
+
+  .code-block .comment { color: rgba(201,168,76,0.5); }
+  .code-block .keyword { color: #c792ea; }
+  .code-block .string { color: #c3e88d; }
+  .code-block .func { color: #82aaff; }
+  .code-block .num { color: #f78c6c; }
+
+  .why-chain {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .why-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 0.8rem 1rem;
+    background: rgba(201,168,76,0.06);
+    border-radius: 4px;
+    border-left: 2px solid rgba(201,168,76,0.3);
+  }
+
+  .why-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.15em;
+  }
+
+  .why-text {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(245,240,232,0.65);
+  }
+
+  /* FOOTER */
+  footer {
+    background: #0d0d0d;
+    padding: 4rem 6rem;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .footer-links a {
+    color: rgba(245,240,232,0.4);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--gold); }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.25);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    .hero { padding: 0 2rem; }
+    section { padding: 5rem 2rem; }
+    .about-grid, .mes-grid, .learn-card, .goals-cols { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 2rem; text-align: center; padding: 3rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">DFX · Portafolio</div>
+  <ul class="nav-links">
+    <li><a href="#acerca">Acerca de mí</a></li>
+    <li><a href="#primer-mes">Primer Mes</a></li>
+    <li><a href="#aprendizajes">Aprendizajes</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Portafolio Universitario · 2025</p>
+    <h1 class="hero-name">Daniel<br><span>Xiquin</span><br>Tezén</h1>
+    <p class="hero-desc">Ingeniero en Ciencias de la Computación en formación, becado por la Fundación Juan Bautista Gutiérrez, emprendedor y apasionado por la tecnología con propósito.</p>
+    <div class="hero-tags">
+      <span class="tag">Universidad del Valle de Guatemala</span>
+      <span class="tag">Primer Ciclo · 2025</span>
+      <span class="tag">Ing. Computación</span>
+      <span class="tag">Emprendimiento</span>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Explorar</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ACERCA DE MÍ -->
+<section id="acerca">
+  <div class="section-label">01 — Quién soy</div>
+  <h2 class="section-title">Acerca de <em>mí</em></h2>
+
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>Soy <strong>Daniel Fernando Xiquin Tezén</strong>, un joven guatemalteco de 18 años, formado por el amor de mi familia, mi fe católica y el arraigo profundo a mis raíces. Desde pequeño he cultivado valores como el compromiso, la honestidad y el liderazgo — experiencias que han moldeado quién soy hoy.</p>
+      <p>Actualmente soy becado de la <strong>Fundación Juan Bautista Gutiérrez</strong> y estudiante de primer ciclo de <strong>Ingeniería en Ciencias de la Computación y Tecnologías de la Información</strong> en la Universidad del Valle de Guatemala — la universidad de mis sueños.</p>
+      <p>Me apasionan la tecnología, el emprendimiento y la posibilidad real de construir soluciones que transformen mi entorno. Sueño con trabajar desde casa para una empresa internacional mientras administro mis propios negocios y contribuyo activamente al desarrollo de Guatemala.</p>
+
+      <div class="values-grid">
+        <div class="value-item"><div class="value-dot"></div>Liderazgo</div>
+        <div class="value-item"><div class="value-dot"></div>Compromiso</div>
+        <div class="value-item"><div class="value-dot"></div>Honestidad</div>
+        <div class="value-item"><div class="value-dot"></div>Humildad</div>
+        <div class="value-item"><div class="value-dot"></div>Emprendimiento</div>
+        <div class="value-item"><div class="value-dot"></div>Fe Católica</div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="about-vision">
+        <h3>✦ Mi Visión</h3>
+        <p>Ser un Ingeniero Informático trabajando desde casa para una empresa internacional, mientras administro mis propios negocios y los de mi familia. Lograr una vida próspera, disfrutar tiempo de calidad con los que amo, viajar y explorar el mundo — con Dios siempre en el centro.</p>
+      </div>
+
+      <div style="margin-top: 2rem; padding: 2rem; background: rgba(45,80,22,0.08); border: 1px solid rgba(45,80,22,0.2); border-radius: 4px;">
+        <h3 style="font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--forest); margin-bottom: 1.2rem;">Principales Logros</h3>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:0.7rem;">
+          <li style="font-size:0.85rem; color:rgba(26,26,26,0.7); display:flex; gap:0.7rem;"><span style="color:var(--forest);">★</span> 2do lugar en la Feria Nacional CIMAT con aplicación web educativa</li>
+          <li style="font-size:0.85rem; color:rgba(26,26,26,0.7); display:flex; gap:0.7rem;"><span style="color:var(--forest);">★</span> Participante en el Foro Internacional de Emprendedores (FIE) con beca PROGRESO</li>
+          <li style="font-size:0.85rem; color:rgba(26,26,26,0.7); display:flex; gap:0.7rem;"><span style="color:var(--forest);">★</span> Miembro activo de la Hermandad de Jesús Nazareno de la Caída</li>
+          <li style="font-size:0.85rem; color:rgba(26,26,26,0.7); display:flex; gap:0.7rem;"><span style="color:var(--forest);">★</span> Becado por la Fundación Juan Bautista Gutiérrez · 2025</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- METAS -->
+  <div style="margin-top: 5rem;" class="reveal">
+    <div class="section-label" style="color: var(--forest);">
+      <span style="width:30px; height:1px; background:var(--forest); display:inline-block;"></span>
+      Mis Metas
+    </div>
+    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 0; color: var(--dark);">Un camino <em style="color:var(--forest);">trazado con propósito</em></h3>
+  </div>
+
+  <div class="goals-cols reveal">
+    <div class="goal-col" style="background:rgba(45,80,22,0.05); border-color:rgba(45,80,22,0.2);">
+      <div class="goal-period" style="color:var(--forest);">Corto Plazo · 2025–2026</div>
+      <ul>
+        <li style="color:rgba(26,26,26,0.75);">Iniciar estudios universitarios con beca Juan Bautista Gutiérrez</li>
+        <li style="color:rgba(26,26,26,0.75);">Poner en marcha negocio de experiencias en la naturaleza</li>
+        <li style="color:rgba(26,26,26,0.75);">Alcanzar nivel A2 de inglés</li>
+      </ul>
+    </div>
+    <div class="goal-col" style="background:rgba(201,168,76,0.04); border-color:rgba(201,168,76,0.2);">
+      <div class="goal-period" style="color:#b8962a;">Mediano Plazo · 2027–2030</div>
+      <ul>
+        <li style="color:rgba(26,26,26,0.75);">Dominar inglés nivel B2</li>
+        <li style="color:rgba(26,26,26,0.75);">Consolidar negocio autosostenible</li>
+        <li style="color:rgba(26,26,26,0.75);">Graduarme con honores como Ingeniero en Computación</li>
+      </ul>
+    </div>
+    <div class="goal-col" style="background:rgba(139,58,42,0.04); border-color:rgba(139,58,42,0.2);">
+      <div class="goal-period" style="color:var(--rust);">Largo Plazo · 2031+</div>
+      <ul>
+        <li style="color:rgba(26,26,26,0.75);">Primer empleo internacional en Informática</li>
+        <li style="color:rgba(26,26,26,0.75);">Construir mi propia casa</li>
+        <li style="color:rgba(26,26,26,0.75);">Formar mi familia con matrimonio católico</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRIMER MES -->
+<section id="primer-mes">
+  <div class="section-label">02 — Mi experiencia</div>
+  <h2 class="section-title">Mi primer mes en la <em>universidad</em></h2>
+
+  <div class="highlight-quote reveal">
+    "Estoy en la universidad de mis sueños y cada día confirma que este es mi lugar."
+  </div>
+
+  <div class="mes-grid">
+    <div class="reveal">
+      <div class="mes-card positive">
+        <h3>✦ Lo que me ha encantado</h3>
+        <p>La Universidad del Valle de Guatemala superó mis expectativas desde el primer día. La metodología que equilibra teoría con práctica continua, las instalaciones de alta tecnología, la flexibilidad del sistema académico y el ambiente tan agradable y diverso hacen que cada jornada valga la pena. Algo que me parece extraordinario es que la universidad promueve activamente el uso de la Inteligencia Artificial como herramienta de aprendizaje — no para reemplazar el pensamiento, sino para potenciarlo.</p>
+      </div>
+
+      <div class="mes-card positive" style="background: rgba(45,80,22,0.12);">
+        <h3>✦ Lo que me ha motivado</h3>
+        <p>Ver la innovación y la tecnología aplicadas en el aula, saber que estoy formándome en una universidad que se mantiene a la vanguardia y conectar con compañeros que comparten mi pasión por la computación y el emprendimiento.</p>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="mes-card challenge">
+        <h3>⚡ El desafío principal</h3>
+        <p>Al inicio fue difícil organizarme frente a tanta información, tareas, informes y proyectos simultáneos. El volumen de pendientes era considerable y más de una vez las cosas se me perdían entre el tiempo o simplemente las olvidaba. Fue un choque de realidad que me exigió reinventarme rápido.</p>
+      </div>
+
+      <div class="mes-card solution">
+        <h3>✅ Mi solución</h3>
+        <p>Implementé un sistema de gestión personal en <strong>Notion</strong> para centralizar todas mis tareas, fechas de entrega y proyectos. Con este sistema, ahora tengo claridad sobre mis pendientes, prioridades y avances. La organización dejó de ser un problema para convertirse en una fortaleza. Esta experiencia me enseñó que la disciplina y los sistemas son tan importantes como el talento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APRENDIZAJES -->
+<section id="aprendizajes">
+  <div class="section-label">03 — Computación</div>
+  <h2 class="section-title">Mis aprendizajes en <em>Computación</em></h2>
+  <p style="font-size:0.95rem; color:rgba(26,26,26,0.6); max-width:600px; margin-bottom:4rem; line-height:1.8;">Tres conceptos fundamentales que han marcado mi primer ciclo universitario, con reflexión honesta sobre cada uno.</p>
+
+  <!-- APRENDIZAJE 1 -->
+  <div class="learn-card reveal">
+    <div class="learn-card-content">
+      <div class="learn-number">01</div>
+      <div class="learn-title">Aprender a Desaprender</div>
+      <p class="learn-desc">Uno de los aprendizajes más poderosos y menos esperados del primer ciclo. La universidad me enseñó que el conocimiento previo no siempre es un activo — a veces es una barrera. Desaprender implica cuestionar lo que creíamos saber, soltar supuestos erróneos y abrirnos a nuevas formas de entender los problemas.</p>
+      <p class="learn-desc">En computación esto es crucial: el campo evoluciona tan rápido que aferrarse a métodos antiguos puede limitar nuestro potencial. Aprender a desaprender es la habilidad que nos permite seguir creciendo sin importar cuánto cambie la tecnología.</p>
+    </div>
+    <div class="learn-meta">
+      <h4>🔍 Metacognición</h4>
+      <p><strong>¿Cómo están mis habilidades?</strong><br>Estoy en proceso. Identifico que me cuesta abandonar ideas preconcebidas, pero cada vez soy más consciente de cuándo esto ocurre.</p>
+      <br>
+      <p><strong>¿Cómo puedo mejorar?</strong><br>Practicando la humildad intelectual: escuchar antes de concluir, preguntar antes de asumir, y estar dispuesto a cambiar de opinión ante nueva evidencia.</p>
+      <br>
+      <p><strong>¿Qué necesito?</strong><br>Exposición constante a perspectivas distintas, mentores que desafíen mi forma de pensar y la disciplina de reflexionar sobre mis propios supuestos.</p>
+    </div>
+  </div>
+
+  <!-- APRENDIZAJE 2 -->
+  <div class="learn-card reveal">
+    <div class="learn-card-content">
+      <div class="learn-number">02</div>
+      <div class="learn-title">El Método de los 5 Por Qués</div>
+      <p class="learn-desc">Aprendido en Algoritmos y Programación, este método consiste en ante cualquier problema, preguntarse "¿por qué?" de forma encadenada hasta cinco veces, donde cada respuesta genera una nueva pregunta más profunda. El objetivo es llegar a la causa raíz real, no solo tratar síntomas superficiales.</p>
+
+      <div class="why-chain">
+        <div class="why-item">
+          <span class="why-num">¿Por qué?</span>
+          <span class="why-text">El programa no funciona correctamente.</span>
+        </div>
+        <div class="why-item">
+          <span class="why-num">¿Por qué?</span>
+          <span class="why-text">Porque el algoritmo produce resultados incorrectos.</span>
+        </div>
+        <div class="why-item">
+          <span class="why-num">¿Por qué?</span>
+          <span class="why-text">Porque la lógica de la condición está mal planteada.</span>
+        </div>
+        <div class="why-item">
+          <span class="why-num">¿Por qué?</span>
+          <span class="why-text">Porque no se entendió bien el problema desde el inicio.</span>
+        </div>
+        <div class="why-item" style="border-left-color: var(--gold); background: rgba(201,168,76,0.1);">
+          <span class="why-num" style="color:var(--gold-light);">Causa raíz →</span>
+          <span class="why-text" style="color:rgba(245,240,232,0.9);">Falta de análisis profundo antes de programar.</span>
+        </div>
+      </div>
+    </div>
+    <div class="learn-meta">
+      <h4>🔍 Metacognición</h4>
+      <p><strong>¿Cómo están mis habilidades?</strong><br>Comprendo el método y lo aplico en problemas de programación. Me ayuda enormemente a no apressurarme a codificar sin entender.</p>
+      <br>
+      <p><strong>¿Cómo puedo mejorar?</strong><br>Practicándolo fuera del ámbito técnico: en la gestión de proyectos, en situaciones personales y en el análisis de procesos de negocio.</p>
+      <br>
+      <p><strong>¿Qué necesito?</strong><br>Convertirlo en un hábito automático. Que sea mi primera reacción ante cualquier problema, no solo una herramienta que recuerdo usar ocasionalmente.</p>
+    </div>
+  </div>
+
+  <!-- APRENDIZAJE 3 -->
+  <div class="learn-card reveal">
+    <div class="learn-card-content">
+      <div class="learn-number">03</div>
+      <div class="learn-title">La Librería Turtle de Python</div>
+      <p class="learn-desc">Una de las experiencias más satisfactorias de mis primeras semanas de programación. La librería Turtle de Python permite crear gráficos y dibujos en pantalla usando comandos de movimiento — es como tener un lápiz digital que obedece tu código. Lo que parecía simple resultó ser una poderosa introducción al pensamiento computacional: pensar en términos de ángulos, distancias, bucles y lógica para crear formas visuales.</p>
+
+      <div class="code-block">
+<span class="comment"># Dibujando una figura con Turtle en Python</span>
+<span class="keyword">import</span> turtle
+
+t = turtle.<span class="func">Turtle</span>()
+t.speed(<span class="num">5</span>)
+t.<span class="func">pencolor</span>(<span class="string">"#c9a84c"</span>)
+
+<span class="comment"># Dibujar un cuadrado con colores</span>
+colores = [<span class="string">"#c9a84c"</span>, <span class="string">"#6b8f4e"</span>, <span class="string">"#8b3a2a"</span>, <span class="string">"#4a7ab5"</span>]
+
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="func">range</span>(<span class="num">36</span>):
+    t.<span class="func">pencolor</span>(colores[i % <span class="num">4</span>])
+    t.<span class="func">forward</span>(<span class="num">100</span>)
+    t.<span class="func">right</span>(<span class="num">90</span>)
+    t.<span class="func">forward</span>(<span class="num">100</span>)
+    t.<span class="func">right</span>(<span class="num">100</span>)
+
+turtle.<span class="func">done</span>()
+      </div>
+    </div>
+    <div class="learn-meta">
+      <h4>🔍 Metacognición</h4>
+      <p><strong>¿Cómo están mis habilidades?</strong><br>Puedo crear figuras básicas y entiendo cómo funciona la lógica detrás de los movimientos. Cada figura que logro dibujar correctamente representa un pensamiento algorítmico que funciona.</p>
+      <br>
+      <p><strong>¿Cómo puedo mejorar?</strong><br>Intentar proyectos más complejos: animaciones, figuras fractales, o incluso un pequeño juego usando los fundamentos de Turtle como punto de partida.</p>
+      <br>
+      <p><strong>¿Qué necesito?</strong><br>Más horas de práctica, experimentación sin miedo a equivocarme, y aprender gradualmente más librerías de Python que amplíen lo que puedo crear.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Daniel Xiquin</div>
+  <div class="footer-links">
+    <a href="https://www.instagram.com/fr_xiquin" target="_blank">Instagram</a>
+    <a href="https://www.facebook.com/share/17gZrt6YCG/" target="_blank">Facebook</a>
+    <a href="mailto:contacto@danielxiquin.com">Contacto</a>
+  </div>
+  <div class="footer-copy">UVG · Ingeniería Computación · 2025</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
